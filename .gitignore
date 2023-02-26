@@ -12,6 +12,3 @@ build/
 dist/
 *.egg-info/
 *.egg
-
-# Sphinx
-docs/_build
