@@ -32,9 +32,9 @@ class Log:
 
             with open("logs/debug.log", "a") as f:
                 if self.date:
-                    f.write(f"[{level.upper()} | {get_date()}] [{module}] {message}")
+                    f.write(f"[{level.upper()} | {get_date()}] [{module}] {message}\n")
                 else:
-                    f.write(f"[{level.upper()}] [{module}] {message}")
+                    f.write(f"[{level.upper()}] [{module}] {message}\n")
         elif self.debug and not self.log_file:
             if self.date:
                 print(self._color_string(f"[{level.upper()} | {get_date()}] [{module}] {message}", level))

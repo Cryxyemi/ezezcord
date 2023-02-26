@@ -24,6 +24,7 @@ class Bot(discord.Bot):
         self.log_file = log_file
         self.__sync_commands = sync_commands
         self.ready_event = ready_print
+        self._debug = debug
 
         self._start_time: Union[float, None] = None
 
@@ -37,40 +38,43 @@ class Bot(discord.Bot):
             self.add_listener(self.__ready__, "on_ready")
 
     async def __sync_cmds__(self) -> None:
-        self.logger._force_logger("Syncing slash commands", "mikocord", "info")
+        if self._debug:
+            self.logger.logger("Syncing slash commands", "mikocord", "debug")
         await self.sync_commands()
 
     async def __connected__(self) -> None:
-        self.logger._force_logger(f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "mikocord", "info")
+        self.logger.logger(f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "mikocord", "info")
 
     async def __ready__(self) -> None:
-        if self.ready_event:
-            self.logger._force_logger("Bot is ready", "mikocord", "info")
+        self.logger.logger("Bot is ready", "mikocord", "info")
 
     def exec(self) -> None:
         self._start_time = time.time()
-        self.logger.logger("Starting bot", "mikocord", "info")
+        self.logger.logger("Starting bot...", "mikocord", "info")
         self.run(self.token)
 
     def _register_cog(self, dir: str, subdir: str = None) -> None:
         if not subdir:
             for file in os.scandir(dir):
-                if file.endswith(".py"):
+                if file.name.endswith(".py"):
                     self.load_extension(f"{dir}.{file[:-3]}")
-                    self.logger.logger(f"Loaded extension {dir}.{file[:-3]}", "mikocord", "debug")
+                    if self._debug:
+                        self.logger.logger(f"Loaded extension {dir}.{file[:-3]}", "mikocord", "debug")
         else:
             for file in os.scandir(dir):
-                if file.endswith(".py"):
+                if file.name.endswith(".py"):
                     self.load_extension(f"{dir}.{subdir}.{file[:-3]}")
-                    self.logger.logger(f"Loaded extension {dir}.{subdir}.{file[:-3]}", "mikocord", "debug")
+                    if self._debug:
+                        self.logger.logger(f"Loaded extension {dir}.{subdir}.{file[:-3]}", "mikocord", "debug")
 
     def load_dir(self, dir: str) -> None:
-        self.logger.logger(f"Loading directory {dir}", "mikocord", "debug")
+        if self._debug:
+            self.logger.logger(f"Loading directory {dir}", "mikocord", "debug")
         self._register_cog(dir)
 
     def load_subdir(self, dir: str) -> None:
-        self.logger.logger(f"Loading subdirectory {dir}", "mikocord", "debug")
-
+        if self._debug:
+            self.logger.logger(f"Loading subdirectory {dir}", "mikocord", "debug")
         for subdir in os.scandir(dir):
             if subdir.is_dir():
                 self._register_cog(dir, subdir.name)
