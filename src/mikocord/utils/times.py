@@ -1,10 +1,7 @@
-import datetime
 from datetime import timezone, datetime, timedelta
 from typing import Literal
 
 from discord.utils import format_dt, utcnow
-
-from .utils import tp
 
 
 def set_utc(dt: datetime) -> datetime:
@@ -20,36 +17,6 @@ def set_utc(dt: datetime) -> datetime:
     :class:`datetime.datetime`
     """
     return dt.replace(tzinfo=timezone.utc)
-
-
-def convert_time(seconds: int, relative=True) -> str:
-    """Convert seconds to a human-readable time.
-
-    Parameters
-    ----------
-    seconds: :class:`int`
-        The amount of seconds to convert.
-    relative: :class:`bool`
-        Whether to use relative time. Defaults to ``True``.
-
-        .. hint::
-            This is only needed for German translation and will
-            not have any effect if the language is set to English.
-
-    Returns
-    -------
-    :class:`str`
-    """
-    if seconds < 60:
-        return f"{round(seconds)} {tp('sec', round(seconds))}"
-    minutes = seconds / 60
-    if minutes < 60:
-        return f"{round(minutes)} {tp('min', round(minutes))}"
-    hours = minutes / 60
-    if hours < 24:
-        return f"{round(hours)} {tp('hour', round(hours))}"
-    days = hours / 24
-    return f"{round(days)} {tp('day', round(days), relative=relative)}"
 
 
 def dc_timestamp(
@@ -112,17 +79,19 @@ class Convertor:
         return round(seconds / self.day, 100)
 
 
-def with_date(text) -> str:
+def with_date(text):
     """Returnss the current time in the text\n
     ``[Day-Month-Year Hour:Minute:Second] your text``
     """
-    cTime = datetime.datetime.now()
+    cTime = datetime.now()
 
-    return f"[{cTime.day}-{cTime.month}-{cTime.year} {cTime.hour}:{cTime.minute}:{cTime.second}] {text}"
+    # return f"[{cTime.day}-{cTime.month}-{cTime.year} {cTime.hour}:{cTime.minute}:{cTime.second}] {text}"
+    return cTime.strftime("%d-%m-%Y %H:%M:%S")
 
 
 def get_date() -> str:
     """Returns the current time in the format ``Day-Month-Year Hour:Minute:Second``"""
-    cTime = datetime.datetime.now()
+    cTime = datetime.now()
 
-    return f"{cTime.day}-{cTime.month}-{cTime.year} {cTime.hour}:{cTime.minute}:{cTime.second}"
+    # return f"{cTime.day}-{cTime.month}-{cTime.year} {cTime.hour}:{cTime.minute}:{cTime.second}"
+    return cTime.strftime("%d-%m-%Y %H:%M:%S")

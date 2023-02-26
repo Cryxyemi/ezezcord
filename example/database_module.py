@@ -29,12 +29,12 @@ async def get_users() -> str:
 @bot.slash_command(name="add_user")
 async def add_user(ctx: discord.ApplicationContext, name: str, age: int) -> None:
     await insert_user(name, age)
-    await ctx.send("User added")
+    await ctx.respond("User added")
 
 @bot.slash_command(name="get_users")
 async def get_users(ctx: mc.ApplicationContext) -> None:
     users = await get_users()
-    await ctx.send(users)
+    await ctx.respond(users)
 
 
 if __name__ == "__main__":
