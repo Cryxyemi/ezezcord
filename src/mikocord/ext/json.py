@@ -16,4 +16,7 @@ class JsonParser:
             json.dump(data, f, indent=4)
 
     def get(self, key: str) -> Union[str, int, float, bool, list, dict]:
-        return self.loaded[key]
+        try:
+            return self.loaded[key]
+        except KeyError:
+            raise KeyError(f"Key {key} not found in {self.file}")
