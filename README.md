@@ -28,11 +28,11 @@ pip install git+https://github.com/Cryxyemi/mikocord.git
 ## Example
 
 ```py
-import mikocord
+import mikocord as mc
 import discord
 
 
-bot = mikocord.Bot(
+bot = mc.Bot(
     token="token"
 )
 
