@@ -26,10 +26,7 @@ dynamic = ["dependencies", "optional-dependencies", "version"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = "requirements.txt"}
-version = {attr = mikocord.__version__"}
-
-[tool.setuptools.dynamic.optional-dependencies]
-docs = {file = "docs/requirements.txt"}
+version = {attr = "mikocord.__version__"}
 
 [project.urls]
 "GitHub" = "https://github.com/Cryxyemi/mikocord"
