@@ -1,6 +1,7 @@
 import os
 import time
 from typing import Union
+import asyncio
 
 import discord
 
@@ -81,11 +82,14 @@ class Bot(discord.Bot):
 
     @property
     def start_time(self) -> float:
+        if self._start_time is None:
+            return self.logger._force_logger("Bot is not running, start_time will be None", "mikocord", "error")
+
         return self._start_time
     
     @property
     def uptime(self) -> float:
         if self._start_time is None:
-            return self.logger._force_logger("Bot is not running", "mikocord", "error")
+            return self.logger._force_logger("Bot is not running, uptime will be None", "mikocord", "error")
         
         return time.time() - self._start_time
