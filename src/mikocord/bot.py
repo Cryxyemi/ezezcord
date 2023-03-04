@@ -44,7 +44,7 @@ class Bot(discord.Bot):
         await self.sync_commands()
 
     async def __connected__(self) -> None:
-        self.logger.logger(f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "mikocord", "info")
+        self.logger.logger(f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "websocket", "info")
 
     async def __ready__(self) -> None:
         self.logger.logger("Bot is ready", "mikocord", "info")
@@ -58,24 +58,24 @@ class Bot(discord.Bot):
         if not subdir:
             for file in os.scandir(dir):
                 if file.name.endswith(".py"):
-                    self.load_extension(f"{dir}.{file[:-3]}")
+                    self.load_extension(f"{dir}.{file.name[:-3]}")
                     if self._debug:
-                        self.logger.logger(f"Loaded extension {dir}.{file[:-3]}", "mikocord", "debug")
+                        self.logger.logger(f"Loaded extension {dir}.{file.name[:-3]}", "cogs", "debug")
         else:
-            for file in os.scandir(dir):
+            for file in os.scandir(f"{dir}/{subdir}"):
                 if file.name.endswith(".py"):
-                    self.load_extension(f"{dir}.{subdir}.{file[:-3]}")
+                    self.load_extension(f"{dir}.{subdir}.{file.name[:-3]}")
                     if self._debug:
-                        self.logger.logger(f"Loaded extension {dir}.{subdir}.{file[:-3]}", "mikocord", "debug")
+                        self.logger.logger(f"Loaded extension {dir}.{subdir}.{file.name[:-3]}", "cogs", "debug")
 
     def load_dir(self, dir: str) -> None:
         if self._debug:
-            self.logger.logger(f"Loading directory {dir}", "mikocord", "debug")
+            self.logger.logger(f"Loading directory {dir}", "cogs", "debug")
         self._register_cog(dir)
 
     def load_subdir(self, dir: str) -> None:
         if self._debug:
-            self.logger.logger(f"Loading subdirectory {dir}", "mikocord", "debug")
+            self.logger.logger(f"Loading subdirectory {dir}", "cogs", "debug")
         for subdir in os.scandir(dir):
             if subdir.is_dir():
                 self._register_cog(dir, subdir.name)

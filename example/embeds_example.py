@@ -5,7 +5,7 @@ from mikocord.modules import Colors
 
 
 bot = mc.Bot(
-    toke="token"
+    token="token"
 )
 
 @bot.slash_command(name="test")
