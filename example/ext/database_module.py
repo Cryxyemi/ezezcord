@@ -1,7 +1,7 @@
 import asyncio
 import discord
 import mikocord as mc
-from mikocord.ext import Database
+from mikocord import execute, FetchTypes
 
 
 bot = mc.Bot(
@@ -10,17 +10,15 @@ bot = mc.Bot(
 
 # Database module
 
-db = Database # Not required, but for short down the name
-
-@db.execute
+@execute()
 async def create_table() -> str:
     return "CREATE TABLE IF NOT EXISTS users (name TEXT, age INTEGER)"
 
-@db.execute
+@execute()
 async def insert_user(name: str, age: int) -> str:
     return "INSERT INTO users VALUES (?, ?)"
 
-@db.fetch(fetch=db.FetchTypes.ALL)
+@execute(fetch=FetchTypes.ALL)
 async def get_users() -> str:
     return "SELECT * FROM users"
 

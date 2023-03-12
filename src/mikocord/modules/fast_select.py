@@ -2,6 +2,7 @@ import discord
 
 
 class FastSelect(discord.ui.Select):
+    """A class to create fast a select menu."""
     def __init__(
             self,
             callback: callable,

@@ -5,52 +5,42 @@ from enum import Enum
 import aiosqlite
 
 
-class Database:
-    class FetchTypes(Enum):
-        ONE = 1
-        ALL = 2
-        MANY = 3
+class FetchTypes(Enum):
+    """The fetch type for the execute decorator."""
+    ONE = 1
+    ALL = 2
+    NONE = 3
 
-    @classmethod
-    def execute(cls, func: Coroutine):
+def execute(database: str = "main.db", fetch: FetchTypes = FetchTypes.NONE):
+    """Execute a SQL query in a coroutine.
+
+    Arguments
+    ---------
+    ``database`` (``str``, optional): The database where it should execute the query. Defaults to "main.db".
+
+    ``fetch`` (``FetchTypes``, optional): The fetch type, seen ``FetchTypes``. Defaults to ``FetchTypes.NONE``.
+    """
+    def inner(func: Coroutine):
         if not asyncio.iscoroutinefunction(func):
             raise TypeError(f"{func.__repr__()}  must be a coroutine")
             
         async def wrapper(*args, **kw):
             code = await func(*args, **kw)
-            
-            async with aiosqlite.connect('test.db') as db:
-                await db.execute(code, args)
-                
-                await db.commit()
-                
-            return "This should work"
-            
-        return wrapper
 
-    @classmethod
-    def fetch(cls, fetch: FetchTypes = FetchTypes.ONE):
-        def inner(func: Coroutine):
-            if not asyncio.iscoroutinefunction(func):
-                raise TypeError(f"{func.__repr__()} must be a coroutine")
-            
-            async def wrapper(*args, **kw):
-                code = await func(*args, **kw)
-                
-                async with aiosqlite.connect('test.db') as db:
+            if fetch == FetchTypes.NONE:
+                async with aiosqlite.connect(database) as db:
+                    await db.execute(code, args)
+                    
+                    await db.commit()
+                return True
+            else:
+                async with aiosqlite.connect(database) as db:
                     async with db.execute(code, args) as cursor:
-                        if fetch == cls.FetchTypes.ONE:
+                        if fetch == FetchTypes.ONE:
                             return await cursor.fetchone()
-                        
-                        elif fetch == cls.FetchTypes.ALL:
+                        elif fetch == FetchTypes.ALL:
                             return await cursor.fetchall()
-                        
-                        elif fetch == cls.FetchTypes.MANY:
-                            return await cursor.fetchmany()
-                        
                         else:
-                            raise ValueError(f"Invalid fetch type, expected Fetch.ONE, Fetch.ALL or Fetch.MANY, got {fetch}")
-                
-            return wrapper
-        
-        return inner
+                            raise ValueError(f"Invalid fetch type, expected 'Fetch.ONE' or 'Fetch.ALL', got '{fetch}'")
+        return wrapper
+    return inner

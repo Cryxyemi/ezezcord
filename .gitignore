@@ -7,6 +7,7 @@ venv
 *.log
 *.ini
 .vscode/
+test/
 
 # Packaging
 build/

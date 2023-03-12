@@ -21,6 +21,22 @@ from discord import Color
 
 
 class Embeds:
+    """Embed templates.
+    
+    Private methods
+    ---------------
+    ``__send_embed__`` -> Sends an Embed.
+
+    Public methods
+    --------------
+    ``error`` -> Sends an error message.
+
+    ``success`` -> Sends a success message.
+
+    ``info`` -> Sends an info message.
+    
+    ``warn`` -> Sends a warning message.
+    """
     @classmethod
     async def __send_embed__(
         cls,
@@ -86,5 +102,55 @@ class Embeds:
         embed = discord.Embed(
             description=txt,
             color=Color.green()
+        )
+        await cls.__send_embed__(ctx, embed, view)
+
+    @classmethod
+    async def info(
+        cls,
+        ctx: Union[discord.ApplicationContext, discord.Interaction],
+        txt: str,
+        view: discord.ui.View = None
+    ):
+        """Send an info message.
+
+        Parameters
+        ----------
+        ctx:
+            The application context or the interaction to send the message to.
+        txt:
+            The text to send.
+        view:
+            The view to send with the message.
+
+        """
+        embed = discord.Embed(
+            description=txt,
+            color=Color.blue()
+        )
+        await cls.__send_embed__(ctx, embed, view)
+
+    @classmethod
+    async def warn(
+        cls,
+        ctx: Union[discord.ApplicationContext, discord.Interaction],
+        txt: str,
+        view: discord.ui.View = None
+    ):
+        """Send a warning message.
+
+        Parameters
+        ----------
+        ctx:
+            The application context or the interaction to send the message to.
+        txt:
+            The text to send.
+        view:
+            The view to send with the message.
+
+        """
+        embed = discord.Embed(
+            description=txt,
+            color=Color.orange()
         )
         await cls.__send_embed__(ctx, embed, view)

@@ -17,9 +17,9 @@ class Bot(discord.Bot):
         log_file: bool = False,
         sync_commands: bool = True,
         *args,
-        **kwargs
+        **kwargs,
     ) -> None:
-        super().__init__(Intents=intents, *args, **kwargs)
+        super().__init__(intents=intents, *args, **kwargs)
 
         self.token = token
         self.log_file = log_file
@@ -47,7 +47,9 @@ class Bot(discord.Bot):
         self.logger.logger(f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "websocket", "info")
 
     async def __ready__(self) -> None:
-        self.logger.logger("Bot is ready", "mikocord", "info")
+        self.logger.logger(f"Bot is ready", "mikocord", "info")
+        self.logger.logger(f"Guild(s): {len(self.guilds)}", "mikocord", "info")
+        self.logger.logger(f"Mikocord version: 1.9.0 | Pycord version: {discord.__version__}", "mikocord", "debug")
 
     def exec(self) -> None:
         self._start_time = time.time()

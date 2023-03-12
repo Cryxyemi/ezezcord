@@ -16,6 +16,31 @@ class InputStyle(Enum):
 
 
 class ModalIO(Modal):
+    """
+A modal that can be used to get user input and return it.
+
+Parameters
+----------
+``title``: The title of the modal.
+
+Methods
+-------
+``add_option``: Add an option to the modal.
+``send_wait``: Send the modal and wait for the user to respond.
+
+Example
+-------
+.. code-block:: python
+
+    @bot.slash_command()
+    async def test(ctx):
+        modal = ModalIO(title="Test")
+        modal.add_option(label="Test", placeholder="Test")
+
+        result = await modal.send_wait(ctx)
+
+        await ctx.send(result[0].value)
+    """
     def __init__(
         self,
         title: str
@@ -25,7 +50,7 @@ class ModalIO(Modal):
 
         super().__init__(title=title, custom_id="MODALIO", timeout=self.con.from_minute(10))
 
-    def app_option(
+    def add_option(
         self,
         label: str,
         placeholder: str,
