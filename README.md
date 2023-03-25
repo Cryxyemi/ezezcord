@@ -16,14 +16,14 @@ Python 3.8 or higher is required.
 
 You can install the latest release from [PyPI](https://pypi.org/project/mikocord/) (Coming soon).
 
-``` cmd
+```sh
 pip install mikocord
 ```
 
 You can also install the latest Dev version. Note the Dev version maybe have bugs and can be unstable
 and requires [git](https://git-scm.com/downloads) to be installed.
 
-``` cmd
+```sh
 pip install git+https://github.com/Cryxyemi/mikocord.git
 ```
 
