@@ -4,9 +4,8 @@ from mikocord.modules import Embeds
 from mikocord.modules import Colors
 
 
-bot = mc.Bot(
-    token="token"
-)
+bot = mc.Bot()
+
 
 @bot.slash_command(name="test")
 async def test(ctx: discord.ApplicationContext) -> None:
@@ -20,4 +19,4 @@ async def test(ctx: discord.ApplicationContext) -> None:
     await Embeds.error(ctx, "This is an error embed")
 
 if __name__ == "__main__":
-    bot.exec()
+    bot.run("token")

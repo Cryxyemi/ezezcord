@@ -14,7 +14,13 @@ An easy-to-use extension for the [Pycord](https://github.com/Pycord-Development/
 
 Python 3.8 or higher is required.
 
-You can also install the latest version from GitHub. Note that this version
+You can install the latest release from [PyPI](https://pypi.org/project/mikocord/) (Coming soon).
+
+``` cmd
+pip install mikocord
+```
+
+You can also install the latest Dev version. Note the Dev version maybe have bugs and can be unstable
 and requires [git](https://git-scm.com/downloads) to be installed.
 
 ``` cmd
@@ -24,6 +30,7 @@ pip install git+https://github.com/Cryxyemi/mikocord.git
 ## Useful Links
 
 - [Pycord Docs](https://docs.pycord.dev/)
+- [Changelog](https://github.com/Cryxyemi/mikocord/blob/main/Changelog.md)
 
 ## Example
 

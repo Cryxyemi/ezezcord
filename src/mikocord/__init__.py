@@ -1,11 +1,12 @@
 __title__ = "mikocord"
 __author__ = "Cryxyemi"
 __license__ = "MIT"
-__version__ = "1.9.1"
+__version__ = _version
 
-from .bot import Bot
+from .bot import Bot, _version
 
 from .utils.ver_check import version
+from .utils.log import Log
 
 from .ext import (
     execute,
@@ -16,7 +17,6 @@ from .modules import (
     Embeds,
     ModalIO,
     Colors,
-    FastSelect,
 )
 
-version._check(__version__)
+version._check(_version)

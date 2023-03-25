@@ -2,10 +2,8 @@ import mikocord as mc
 from mikocord.modules import ModalIO
 
 
-bot = mc.Bot(
-    token="token",
-    debug=True,
-)
+bot = mc.Bot()
+
 
 @bot.command()
 async def test(ctx) -> None:
@@ -18,4 +16,4 @@ async def test(ctx) -> None:
         await ctx.send("Something went wrong :/")
 
 if __name__ == "__main__":
-    bot.exec()
+    bot.run("token")
