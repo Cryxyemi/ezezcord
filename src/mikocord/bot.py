@@ -163,8 +163,6 @@ class Bot(discord.Bot):
 
     def _load_config(self) -> dict:
         """Not to be used by the user. Loads the config file"""
-        self.logger.logger("Loading config file...", "mikocord", "debug")
-
         if not os.path.exists("mikocord.json"):
             with open("mikocord.json", "w") as f:
                 json.dump({
