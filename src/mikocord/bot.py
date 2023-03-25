@@ -61,15 +61,15 @@ class Bot(discord.Bot):
                  *args,
                  **kwargs,
                  ) -> None:
-        self._load_config()
+        _cfg = self._load_config()
 
         super().__init__(intents=intents, *args, **kwargs)
 
-        self.token: str = None
-        self.log_file: bool = None
-        self.__sync_commands: bool = None
-        self.ready_event: bool = None
-        self._debug: bool = None
+        self.token: str = _cfg["token"]
+        self.log_file: bool = _cfg["log_file"]
+        self.__sync_commands: bool = _cfg["sync_commands"]
+        self.ready_event: bool = _cfg["ready_print"]
+        self._debug: bool = _cfg["debug"]
 
         self._start_time: Union[float, None] = None
 
@@ -80,7 +80,7 @@ class Bot(discord.Bot):
 
         if self.ready_event:
             self.add_listener(self._connected, "on_connect")
-            self.add_listener(self._ready, "on_ready")
+            self.add_listener(self._ready_func, "on_ready")
 
     async def _sync_cmds(self) -> None:
         """Not to be used by the user"""
@@ -93,7 +93,7 @@ class Bot(discord.Bot):
         self.logger.logger(
             f"Connected to Discord Gateway ({round(self.latency * 1000)}ms)", "websocket", "info")
 
-    async def _ready(self) -> None:
+    async def _ready_func(self) -> None:
         """Not to be used by the user"""
         self.logger.logger(f"Bot is ready", "mikocord", "info")
         self.logger.logger(f"Guild(s): {len(self.guilds)}", "mikocord", "info")
@@ -179,27 +179,19 @@ class Bot(discord.Bot):
         if type(config["token"]) != str:
             raise ValueError("Token must be a string")
 
-        self.token = config["token"]
-
         if type(config["debug"]) != bool:
             raise ValueError("Debug must be a boolean")
-
-        self._debug = config["debug"]
 
         if type(config["log_file"]) != bool:
             raise ValueError("Log file must be a boolean")
 
-        self.log_file = config["log_file"]
-
         if type(config["sync_commands"]) != bool:
             raise ValueError("Sync commands must be a boolean")
-
-        self.__sync_commands = config["sync_commands"]
 
         if type(config["ready_print"]) != bool:
             raise ValueError("Ready print must be a boolean")
 
-        self.ready_event = config["ready_print"]
+        return config
 
     @property
     def start_time(self) -> float:
