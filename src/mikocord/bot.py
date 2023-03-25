@@ -8,11 +8,12 @@ import discord
 
 from .utils.log import Log
 from .errors import NoSetupFound
+from .ext import Database
 
 _version = "2.0.0"
 
 
-class Bot(discord.Bot):
+class Bot(discord.Bot, Database):
     """
     The main bot class
 
@@ -26,6 +27,15 @@ class Bot(discord.Bot):
     --------------
     `run(token: str = None)` -> None
         Starts the bot
+
+    `load_cogs(dir: str, subdir: bool = None)` -> None
+        Loads cogs from a directory
+
+    `execute_query(query: str, args: tuple = None, fetch: FetchTypes = FetchTypes.NONE)` -> Any
+        Executes a query
+
+    `execute(database: str, fetch: FetchTypes = FetchTypes.NONE)` -> Any
+        A decorator that executes a query
 
     Public Variables
     ----------------
@@ -63,9 +73,8 @@ class Bot(discord.Bot):
                  ) -> None:
         _cfg = self._load_config()
 
-        super().__init__(intents=intents, *args, **kwargs)
-
         self.token: str = _cfg["token"]
+        self.db: str = _cfg["db"]
         self.log_file: bool = _cfg["log_file"]
         self.__sync_commands: bool = _cfg["sync_commands"]
         self.ready_event: bool = _cfg["ready_print"]
@@ -74,6 +83,12 @@ class Bot(discord.Bot):
         self._start_time: Union[float, None] = None
 
         self.logger = Log(log_file=self.log_file, debug=self._debug)
+
+        discord.Bot.__init__(self, intents=intents, *args, **kwargs)
+        Database.__init__(self, self.db)
+
+        with open(self.db, "w"):
+            pass
 
         if self.__sync_commands:
             self.add_listener(self._sync_cmds, "on_connect")
@@ -171,25 +186,32 @@ class Bot(discord.Bot):
                     "log_file": False,
                     "sync_commands": True,
                     "ready_print": True,
+                    "database": "main.db",
                 }, f, indent=4, ensure_ascii=False)
 
         with open("mikocord.json", "r") as f:
             config = json.load(f)
 
-        if type(config["token"]) != str:
-            raise ValueError("Token must be a string")
+        try:
+            if type(config["token"]) != str:
+                raise ValueError("Token must be a string")
 
-        if type(config["debug"]) != bool:
-            raise ValueError("Debug must be a boolean")
+            if type(config["database"]) != str:
+                raise ValueError("Database must be a string")
 
-        if type(config["log_file"]) != bool:
-            raise ValueError("Log file must be a boolean")
+            if type(config["debug"]) != bool:
+                raise ValueError("Debug must be a boolean")
 
-        if type(config["sync_commands"]) != bool:
-            raise ValueError("Sync commands must be a boolean")
+            if type(config["log_file"]) != bool:
+                raise ValueError("Log file must be a boolean")
 
-        if type(config["ready_print"]) != bool:
-            raise ValueError("Ready print must be a boolean")
+            if type(config["sync_commands"]) != bool:
+                raise ValueError("Sync commands must be a boolean")
+
+            if type(config["ready_print"]) != bool:
+                raise ValueError("Ready print must be a boolean")
+        except KeyError as e:
+            raise KeyError(f"Key {e} is missing from the config file")
 
         return config
 

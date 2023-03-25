@@ -1,2 +1,2 @@
-from .database import execute, FetchTypes
+from .database import Database
 from .json import JsonParser

@@ -4,8 +4,6 @@ from .modules import (
     Colors,
 )
 from .ext import (
-    execute,
-    FetchTypes,
     JsonParser,
 )
 from .utils.log import Log
