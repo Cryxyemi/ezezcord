@@ -2,6 +2,8 @@
 
 An easy-to-use extension for the [Pycord](https://github.com/Pycord-Development/pycord) library with some utility functions.
 
+### Note: Some examples are outdated
+
 ## Features
 
 - Json parser
