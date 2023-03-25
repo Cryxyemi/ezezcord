@@ -9,7 +9,6 @@ import discord
 from .utils.log import Log
 from .errors import NoSetupFound
 
-
 _version = "2.0.0"
 
 
