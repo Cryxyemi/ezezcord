@@ -10,7 +10,7 @@ from .utils.log import Log
 from .errors import NoSetupFound
 from .ext import Database
 
-_version = "2.0.0"
+_version = "2.0.1"
 
 
 class Bot(discord.Bot, Database):
@@ -188,6 +188,9 @@ class Bot(discord.Bot, Database):
                     "ready_print": True,
                     "database": "main.db",
                 }, f, indent=4, ensure_ascii=False)
+
+            self.logger.logger("Created config file", "mikocord", "info")
+            exit(0)
 
         with open("mikocord.json", "r") as f:
             config = json.load(f)

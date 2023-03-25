@@ -13,7 +13,7 @@ from .bot import Bot
 __title__ = "mikocord"
 __author__ = "Cryxyemi"
 __license__ = "MIT"
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 
 version._check(__version__)
