@@ -10,12 +10,12 @@ from .ext import (
 )
 from .utils.log import Log
 from .utils.ver_check import version
-from .bot import Bot, _version
+from .bot import Bot
 
 __title__ = "mikocord"
 __author__ = "Cryxyemi"
 __license__ = "MIT"
-__version__ = _version
+__version__ = "2.0.0"
 
 
-version._check(_version)
+version._check(__version__)
