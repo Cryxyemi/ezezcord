@@ -176,25 +176,30 @@ class Bot(discord.Bot):
         with open("mikocord.json", "r") as f:
             config = json.load(f)
 
-        if config["token"] != str:
+        if type(config["token"]) != str:
             raise ValueError("Token must be a string")
 
         self.token = config["token"]
 
-        if config["debug"] != bool:
+        if type(config["debug"]) != bool:
             raise ValueError("Debug must be a boolean")
 
         self._debug = config["debug"]
 
-        if config["log_file"] != bool:
+        if type(config["log_file"]) != bool:
             raise ValueError("Log file must be a boolean")
 
         self.log_file = config["log_file"]
 
-        if config["sync_commands"] != bool:
+        if type(config["sync_commands"]) != bool:
             raise ValueError("Sync commands must be a boolean")
 
         self.__sync_commands = config["sync_commands"]
+
+        if type(config["ready_print"]) != bool:
+            raise ValueError("Ready print must be a boolean")
+
+        self.ready_event = config["ready_print"]
 
     @property
     def start_time(self) -> float:
