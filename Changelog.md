@@ -1,10 +1,14 @@
 # Changelog
 
+## Version 2.1.5
+
+* Added `get` method to the bot class to get a item from the `mikocord.json`
+
 ## Version 2.0.0
 
 * Removed FastSelect.
 * Made a custom cog loader, now the object of a cog is now `mikocord.Bot` instead of `discord.Bot`.
-* Added `mikocord.config` instead of passing the arguments direct to the bot class.
+* Added `mikocord.json` instead of passing the arguments direct to the bot class.
 * change the `exec` method to `run`, token is now an optional argument.
 * Added docstrings to all methods in the bot class.
 * Added a custom error.

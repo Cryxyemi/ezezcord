@@ -2,14 +2,14 @@ import os
 import time
 import json
 import importlib.util
-from typing import Union
+from typing import Union, Any
 
 import discord
 
 from .utils.log import Log
 from .errors import NoSetupFound
 
-_version = "2.0.5"
+_version = "2.1.5"
 
 
 class Bot(discord.Bot):
@@ -35,6 +35,9 @@ class Bot(discord.Bot):
 
     `execute(database: str, fetch: FetchTypes = FetchTypes.NONE)` -> Any
         A decorator that executes a query
+
+    `get(key: str, default: Any = None)` -> Any
+        Gets a value from the config file
 
     Public Variables
     ----------------
@@ -70,14 +73,14 @@ class Bot(discord.Bot):
                  *args,
                  **kwargs,
                  ) -> None:
-        _cfg = self._load_config()
+        self._cfg = self._load_config()
 
-        self.token: str = _cfg["token"]
-        self.db: str = _cfg["database"]
-        self.log_file: bool = _cfg["log_file"]
-        self.__sync_commands: bool = _cfg["sync_commands"]
-        self.ready_event: bool = _cfg["ready_print"]
-        self._debug: bool = _cfg["debug"]
+        self.token: str = self._cfg["token"]
+        self.db: str = self._cfg["database"]
+        self.log_file: bool = self._cfg["log_file"]
+        self.__sync_commands: bool = self._cfg["sync_commands"]
+        self.ready_event: bool = self._cfg["ready_print"]
+        self._debug: bool = self._cfg["debug"]
 
         self._start_time: Union[float, None] = None
 
@@ -217,6 +220,22 @@ class Bot(discord.Bot):
             raise KeyError(f"Key {e} is missing from the config file")
 
         return config
+
+    def get(self, key: str, default: Any = None) -> Union[Any, None]:
+        """Get a key from the `mikocord.json`
+
+        Args
+        ----
+        key: str (required) The key to get from the config file
+
+        Returns
+        -------
+        Returns the value of the key or None if the key does not exist
+        """
+        try:
+            return self._cfg[key]
+        except KeyError:
+            return default
 
     @property
     def start_time(self) -> float:
