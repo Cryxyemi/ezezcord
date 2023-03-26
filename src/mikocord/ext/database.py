@@ -1,13 +1,24 @@
 import asyncio
+import json
 from typing import Coroutine
 from enum import Enum
 
 import aiosqlite
 
+from ..errors import NoDatabaseFound
+
 
 class Database:
     def __init__(self, path: str) -> None:
-        self.path = path
+        with open("mikocord.json", "r") as f:
+            config: dict = json.load(f)
+        try:
+            if type(config["database"]) != str:
+                raise ValueError("Database must be a string")
+
+            self.path = config["database"]
+        except KeyError as e:
+            raise NoDatabaseFound(config)
 
     class FetchTypes(Enum):
         """The fetch type for the execute decorator."""

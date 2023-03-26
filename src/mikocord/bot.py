@@ -8,12 +8,11 @@ import discord
 
 from .utils.log import Log
 from .errors import NoSetupFound
-from .ext import Database
 
-_version = "2.0.1"
+_version = "2.0.2"
 
 
-class Bot(discord.Bot, Database):
+class Bot(discord.Bot):
     """
     The main bot class
 
@@ -84,8 +83,7 @@ class Bot(discord.Bot, Database):
 
         self.logger = Log(log_file=self.log_file, debug=self._debug)
 
-        discord.Bot.__init__(self, intents=intents, *args, **kwargs)
-        Database.__init__(self, self.db)
+        super().__init__(self, intents=intents, *args, **kwargs)
 
         with open(self.db, "w"):
             pass
