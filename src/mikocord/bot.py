@@ -83,7 +83,7 @@ class Bot(discord.Bot):
 
         self.logger = Log(log_file=self.log_file, debug=self._debug)
 
-        super().__init__(self, intents=intents, *args, **kwargs)
+        super().__init__(intents=intents, *args, **kwargs)
 
         with open(self.db, "w"):
             pass
