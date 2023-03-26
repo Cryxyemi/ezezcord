@@ -14,7 +14,7 @@ from .bot import Bot
 __title__ = "mikocord"
 __author__ = "Cryxyemi"
 __license__ = "MIT"
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 
 
 version._check(__version__)

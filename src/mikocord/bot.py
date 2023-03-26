@@ -9,7 +9,7 @@ import discord
 from .utils.log import Log
 from .errors import NoSetupFound
 
-_version = "2.0.2"
+_version = "2.0.3"
 
 
 class Bot(discord.Bot):
@@ -73,7 +73,7 @@ class Bot(discord.Bot):
         _cfg = self._load_config()
 
         self.token: str = _cfg["token"]
-        self.db: str = _cfg["db"]
+        self.db: str = _cfg["database"]
         self.log_file: bool = _cfg["log_file"]
         self.__sync_commands: bool = _cfg["sync_commands"]
         self.ready_event: bool = _cfg["ready_print"]
