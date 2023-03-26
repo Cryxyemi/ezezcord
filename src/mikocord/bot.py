@@ -9,7 +9,7 @@ import discord
 from .utils.log import Log
 from .errors import NoSetupFound
 
-_version = "2.0.4"
+_version = "2.0.5"
 
 
 class Bot(discord.Bot):
@@ -135,33 +135,35 @@ class Bot(discord.Bot):
         if not subdir:
             for file in os.scandir(dir):
                 if file.is_file():
-                    name = file.name.split(os.path.sep)[0]
+                    if file.name.endswith(".py"):
+                        name = file.name.split(os.path.sep)[0]
 
-                    spec = importlib.util.spec_from_file_location(
-                        name, file.path)
-                    module = importlib.util.module_from_spec(spec)
-                    spec.loader.exec_module(module)
+                        spec = importlib.util.spec_from_file_location(
+                            name, file.path)
+                        module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(module)
 
-                    try:
-                        module.setup(self)
-                    except AttributeError:
-                        raise NoSetupFound(module)
+                        try:
+                            module.setup(self)
+                        except AttributeError:
+                            raise NoSetupFound(module)
         else:
             for cog_dir in os.scandir(dir):
                 if cog_dir.is_dir():
                     for subfile in os.scandir(cog_dir.path):
                         if subfile.is_file():
-                            name = subfile.name.split(os.path.sep)[0]
+                            if subfile.name.endswith(".py"):
+                                name = subfile.name.split(os.path.sep)[0]
 
-                            spec = importlib.util.spec_from_file_location(
-                                name, subfile.path)
-                            module = importlib.util.module_from_spec(spec)
-                            spec.loader.exec_module(module)
+                                spec = importlib.util.spec_from_file_location(
+                                    name, subfile.path)
+                                module = importlib.util.module_from_spec(spec)
+                                spec.loader.exec_module(module)
 
-                            try:
-                                module.setup(self)
-                            except AttributeError:
-                                raise NoSetupFound(module)
+                                try:
+                                    module.setup(self)
+                                except AttributeError:
+                                    raise NoSetupFound(module)
 
     def load_cogs(self, *dirs: str, subdirectory: bool = False) -> None:
         """Loads cogs from a directory
